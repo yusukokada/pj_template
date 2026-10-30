@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.vscode/
+# app/app.db はダミーデータのみ。clone 直後に start.bat で動かせるよう、あえて管理対象にしている
+
+# 文書の作業用（変更ごとのスクリプト、PNG の書き出し）
+doc_tools/work/
+doc_tools/render/
+# Office が開いている間にできるロックファイル
+~$*
