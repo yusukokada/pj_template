@@ -1,0 +1,22 @@
+{% extends "work/base.html" %}
+{% load fmt %}
+{% block title %}{{ p.案件名 }}{% endblock %}
+{% block content %}
+<header class="page">
+  <div class="crumb"><a href="{% url 'sample_projects' %}">案件の状況</a></div>
+  <h1>{{ p.案件名 }}</h1>
+  <p class="meta">{{ p.get_案件の状態_display }}｜責任者 {{ p.責任者ID.氏名 }}｜{{ p.開始予定日 }}〜{{ p.終了予定日 }}{% if p.予算 %}｜予算 {{ p.予算|mil }} 百万円{% endif %}</p>
+</header>
+<section class="panel">
+  <h2>タスク<span class="count">{{ rows|length }} 件</span></h2>
+  <table class="list">
+    <thead><tr><th>タスク</th><th>担当者</th><th>状態</th><th>終了予定日</th><th class="num">計画工数（人日）</th><th class="num">実績工数（人日）</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr{% if r.late %} class="late"{% endif %}><td>{{ r.name }}</td><td>{{ r.who }}</td><td>{{ r.state }}{% if r.late %} <span class="badge warn">遅延</span>{% endif %}</td>
+        <td>{{ r.end }}</td><td class="num">{{ r.plan|num }}</td><td class="num">{{ r.actual|num }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

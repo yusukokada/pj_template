@@ -1,0 +1,4 @@
+python-pptx~=1.0.2
+openpyxl~=3.1.5
+# Excel・PowerPoint を COM で操作する（Excel の編集、pptx の PNG 書き出し）。Windows と Office が必要
+pywin32

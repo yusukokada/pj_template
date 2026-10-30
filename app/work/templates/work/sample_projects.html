@@ -1,0 +1,38 @@
+{% extends "work/base.html" %}
+{% load fmt %}
+{% block title %}案件の状況{% endblock %}
+{% block content %}
+<header class="page">
+  <h1>案件の状況</h1>
+  <p class="lead"><b>対応が必要な案件：{{ warn|length }} 件</b>（全 {{ rows|length }} 件）。遅延タスクと工数の超過から判定</p>
+</header>
+{% if warn %}
+<section class="panel">
+  <h2>対応が必要な案件</h2>
+  <table class="list">
+    <thead><tr><th>案件</th><th>責任者</th><th>判定の理由</th></tr></thead>
+    <tbody>
+    {% for r in warn %}
+      <tr><td><a href="{% url 'sample_project' r.id %}">{{ r.name }}</a></td><td>{{ r.owner }}</td>
+        <td>{% for x in r.reasons %}<div>{{ x }}</div>{% endfor %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+<section class="panel">
+  <h2>全案件<span class="count">{{ rows|length }} 件</span></h2>
+  <table class="list">
+    <thead><tr><th>案件</th><th>状態</th><th>責任者</th><th class="num">タスク</th><th class="num">完了</th><th class="num">遅延</th>
+      <th class="num">計画工数（人日）</th><th class="num">実績工数（人日）</th><th class="num">完了タスクの工数比</th><th>判定</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr><td><a href="{% url 'sample_project' r.id %}">{{ r.name }}</a></td><td>{{ r.state }}</td><td>{{ r.owner }}</td>
+        <td class="num">{{ r.tasks }}</td><td class="num">{{ r.done }}</td><td class="num">{{ r.late }}</td>
+        <td class="num">{{ r.plan|num }}</td><td class="num">{{ r.actual|num }}</td><td class="num">{{ r.ratio|num:2 }}</td>
+        <td><span class="badge {% if r.judge == '注意' %}warn{% else %}ok{% endif %}">{{ r.judge }}</span></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

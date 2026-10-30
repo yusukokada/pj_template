@@ -1,0 +1,23 @@
+{% extends "work/base.html" %}
+{% block title %}ホーム{% endblock %}
+{% block content %}
+<header class="page">
+  <h1>ホーム</h1>
+  <p class="lead">{% if source %}元のデータ定義書：{{ source }}{% else %}データ定義書からの生成：未実施（tools/rebuild.py で生成）{% endif %}</p>
+</header>
+{% for area, tables in groups.items %}
+<section class="panel">
+  <h2>{{ area }}<span class="count">{{ tables|length }} テーブル</span></h2>
+  <table class="list">
+    <thead><tr><th>ID</th><th>テーブル名</th><th>層</th><th class="num">件数</th></tr></thead>
+    <tbody>
+    {% for t in tables %}
+      <tr><td>{{ t.id }}</td><td><a href="{{ t.url }}">{{ t.name }}</a></td><td>{{ t.layer }}</td><td class="num">{{ t.count }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% empty %}
+<p class="empty">テーブルなし</p>
+{% endfor %}
+{% endblock %}

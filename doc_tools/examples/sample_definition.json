@@ -1,0 +1,82 @@
+{
+ "title": "サンプル 案件管理 データ定義書",
+ "version": "0.1",
+ "areas": [
+  {"name": "共通マスタ", "app": "master", "label": "00 共通マスタ"},
+  {"name": "案件管理", "app": "prj", "label": "01 案件管理"},
+  {"name": "指標", "app": "metric", "label": "09 指標（計算で作る）"}
+ ],
+ "tables": [
+  {"id": "M1", "area": "共通マスタ", "layer": "マスタ", "name": "組織",
+   "data": "組織の名称と上位の組織", "use": "案件の主管と担当者の所属の集計軸",
+   "unit": "組織1つ", "home": "人事システム",
+   "fields": [
+    {"name": "組織ID", "type": "ID", "key": "PK", "ref": "", "required": true, "source": "取込", "code": "", "desc": "人事システムの組織コード"},
+    {"name": "組織名", "type": "文字", "key": "", "ref": "", "required": true, "source": "取込", "code": "", "desc": ""},
+    {"name": "上位組織ID", "type": "ID", "key": "", "ref": "M1", "required": false, "source": "取込", "code": "", "desc": "最上位の組織は空"},
+    {"name": "有効フラグ", "type": "フラグ", "key": "", "ref": "", "required": false, "source": "取込", "code": "", "desc": "廃止した組織は外す（行は消さない）"}
+   ]},
+  {"id": "M2", "area": "共通マスタ", "layer": "マスタ", "name": "担当者",
+   "data": "社員・委託先の担当者の氏名・所属・区分・標準単価", "use": "タスクの割り当てと工数の金額換算",
+   "unit": "担当者1人", "home": "人事システム（委託先は契約台帳）",
+   "fields": [
+    {"name": "担当者ID", "type": "ID", "key": "PK", "ref": "", "required": true, "source": "取込", "code": "", "desc": ""},
+    {"name": "氏名", "type": "文字", "key": "", "ref": "", "required": true, "source": "取込", "code": "", "desc": ""},
+    {"name": "所属組織ID", "type": "ID", "key": "", "ref": "M1", "required": true, "source": "取込", "code": "", "desc": ""},
+    {"name": "担当者の区分", "type": "区分", "key": "", "ref": "", "required": true, "source": "取込", "code": "", "desc": ""},
+    {"name": "標準単価", "type": "金額", "key": "", "ref": "", "required": false, "source": "取込", "code": "", "desc": "1人日あたりの円"}
+   ]},
+  {"id": "P1", "area": "案件管理", "layer": "記録", "name": "案件",
+   "data": "案件の名称・主管組織・責任者・状態・予定期間・予算", "use": "進捗と費用を案件単位で集める軸",
+   "unit": "案件1件", "home": "このシステム",
+   "fields": [
+    {"name": "案件ID", "type": "ID", "key": "PK", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "案件名", "type": "文字", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "主管組織ID", "type": "ID", "key": "", "ref": "M1", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "責任者ID", "type": "ID", "key": "", "ref": "M2", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "案件の状態", "type": "区分", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "開始予定日", "type": "日付", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "終了予定日", "type": "日付", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "予算", "type": "金額", "key": "", "ref": "", "required": false, "source": "入力", "code": "", "desc": "承認された予算の総額（円）"}
+   ]},
+  {"id": "P2", "area": "案件管理", "layer": "記録", "name": "タスク",
+   "data": "案件のタスクごとの担当者・状態・予定期間・計画工数・完了日", "use": "進捗（予定どおり終わっているか）の判定の元",
+   "unit": "タスク1つ", "home": "このシステム",
+   "fields": [
+    {"name": "タスクID", "type": "ID", "key": "PK", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "案件ID", "type": "ID", "key": "", "ref": "P1", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "タスク名", "type": "文字", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "担当者ID", "type": "ID", "key": "", "ref": "M2", "required": false, "source": "入力", "code": "", "desc": ""},
+    {"name": "タスクの状態", "type": "区分", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "開始予定日", "type": "日付", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "終了予定日", "type": "日付", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "計画工数", "type": "数値", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": "人日"},
+    {"name": "完了日", "type": "日付", "key": "", "ref": "", "required": false, "source": "入力", "code": "", "desc": "完了したときだけ入れる"}
+   ]},
+  {"id": "P3", "area": "案件管理", "layer": "記録", "name": "工数実績",
+   "data": "担当者がタスクに使った日ごとの工数", "use": "実績工数の集計と、計画との比較",
+   "unit": "タスク×作業日×担当者", "home": "このシステム",
+   "fields": [
+    {"name": "タスクID", "type": "ID", "key": "PK", "ref": "P2", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "作業日", "type": "日付", "key": "PK", "ref": "", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "担当者ID", "type": "ID", "key": "PK", "ref": "M2", "required": true, "source": "入力", "code": "", "desc": ""},
+    {"name": "実績工数", "type": "数値", "key": "", "ref": "", "required": true, "source": "入力", "code": "", "desc": "人日"}
+   ]},
+  {"id": "D1", "area": "指標", "layer": "導出", "name": "案件の週次進捗",
+   "data": "案件ごと・基準日ごとの計画工数・実績工数・完了と遅延のタスク数", "use": "進捗の推移と遅れの早期の把握",
+   "unit": "案件×基準日", "home": "このシステム（P1〜P3 から計算）",
+   "fields": [
+    {"name": "案件ID", "type": "ID", "key": "PK", "ref": "P1", "required": true, "source": "計算", "code": "", "desc": ""},
+    {"name": "基準日", "type": "日付", "key": "PK", "ref": "", "required": true, "source": "計算", "code": "", "desc": "毎週金曜"},
+    {"name": "計画工数", "type": "数値", "key": "", "ref": "", "required": false, "source": "計算", "code": "", "desc": "終了予定日が基準日までのタスクの計画工数の合計"},
+    {"name": "実績工数", "type": "数値", "key": "", "ref": "", "required": false, "source": "計算", "code": "", "desc": "基準日までの P3 実績工数の合計"},
+    {"name": "完了タスク数", "type": "数値", "key": "", "ref": "", "required": false, "source": "計算", "code": "", "desc": ""},
+    {"name": "遅延タスク数", "type": "数値", "key": "", "ref": "", "required": false, "source": "計算", "code": "", "desc": "終了予定日を過ぎて完了していないタスクの数"}
+   ]}
+ ],
+ "codes": {
+  "担当者の区分": ["EMP：社員", "VND：委託先"],
+  "案件の状態": ["PLAN：計画中", "RUN：実施中", "DONE：完了", "STOP：中止"],
+  "タスクの状態": ["TODO：未着手", "DOING：着手", "DONE：完了"]
+ }
+}

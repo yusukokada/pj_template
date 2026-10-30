@@ -1,0 +1,422 @@
+{
+ "M1": {
+  "app": "master",
+  "model": "TM1",
+  "name": "組織",
+  "layer": "マスタ",
+  "area": "共通マスタ",
+  "single_pk": true,
+  "fields": [
+   {
+    "field": "組織ID",
+    "name": "組織ID",
+    "type": "ID",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "取込",
+    "kind": "str"
+   },
+   {
+    "field": "組織名",
+    "name": "組織名",
+    "type": "文字",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "取込",
+    "kind": "str"
+   },
+   {
+    "field": "上位組織ID",
+    "name": "上位組織ID",
+    "type": "ID",
+    "key": "",
+    "ref": "M1",
+    "required": false,
+    "source": "取込",
+    "kind": "fk"
+   },
+   {
+    "field": "有効フラグ",
+    "name": "有効フラグ",
+    "type": "フラグ",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "取込",
+    "kind": "bool"
+   }
+  ]
+ },
+ "M2": {
+  "app": "master",
+  "model": "TM2",
+  "name": "担当者",
+  "layer": "マスタ",
+  "area": "共通マスタ",
+  "single_pk": true,
+  "fields": [
+   {
+    "field": "担当者ID",
+    "name": "担当者ID",
+    "type": "ID",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "取込",
+    "kind": "str"
+   },
+   {
+    "field": "氏名",
+    "name": "氏名",
+    "type": "文字",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "取込",
+    "kind": "str"
+   },
+   {
+    "field": "所属組織ID",
+    "name": "所属組織ID",
+    "type": "ID",
+    "key": "",
+    "ref": "M1",
+    "required": true,
+    "source": "取込",
+    "kind": "fk"
+   },
+   {
+    "field": "担当者の区分",
+    "name": "担当者の区分",
+    "type": "区分",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "取込",
+    "kind": "choice"
+   },
+   {
+    "field": "標準単価",
+    "name": "標準単価",
+    "type": "金額",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "取込",
+    "kind": "money"
+   }
+  ]
+ },
+ "P1": {
+  "app": "prj",
+  "model": "TP1",
+  "name": "案件",
+  "layer": "記録",
+  "area": "案件管理",
+  "single_pk": true,
+  "fields": [
+   {
+    "field": "案件ID",
+    "name": "案件ID",
+    "type": "ID",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "str"
+   },
+   {
+    "field": "案件名",
+    "name": "案件名",
+    "type": "文字",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "str"
+   },
+   {
+    "field": "主管組織ID",
+    "name": "主管組織ID",
+    "type": "ID",
+    "key": "",
+    "ref": "M1",
+    "required": true,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "責任者ID",
+    "name": "責任者ID",
+    "type": "ID",
+    "key": "",
+    "ref": "M2",
+    "required": true,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "案件の状態",
+    "name": "案件の状態",
+    "type": "区分",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "choice"
+   },
+   {
+    "field": "開始予定日",
+    "name": "開始予定日",
+    "type": "日付",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "date"
+   },
+   {
+    "field": "終了予定日",
+    "name": "終了予定日",
+    "type": "日付",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "date"
+   },
+   {
+    "field": "予算",
+    "name": "予算",
+    "type": "金額",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "入力",
+    "kind": "money"
+   }
+  ]
+ },
+ "P2": {
+  "app": "prj",
+  "model": "TP2",
+  "name": "タスク",
+  "layer": "記録",
+  "area": "案件管理",
+  "single_pk": true,
+  "fields": [
+   {
+    "field": "タスクID",
+    "name": "タスクID",
+    "type": "ID",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "str"
+   },
+   {
+    "field": "案件ID",
+    "name": "案件ID",
+    "type": "ID",
+    "key": "",
+    "ref": "P1",
+    "required": true,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "タスク名",
+    "name": "タスク名",
+    "type": "文字",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "str"
+   },
+   {
+    "field": "担当者ID",
+    "name": "担当者ID",
+    "type": "ID",
+    "key": "",
+    "ref": "M2",
+    "required": false,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "タスクの状態",
+    "name": "タスクの状態",
+    "type": "区分",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "choice"
+   },
+   {
+    "field": "開始予定日",
+    "name": "開始予定日",
+    "type": "日付",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "date"
+   },
+   {
+    "field": "終了予定日",
+    "name": "終了予定日",
+    "type": "日付",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "date"
+   },
+   {
+    "field": "計画工数",
+    "name": "計画工数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "num"
+   },
+   {
+    "field": "完了日",
+    "name": "完了日",
+    "type": "日付",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "入力",
+    "kind": "date"
+   }
+  ]
+ },
+ "P3": {
+  "app": "prj",
+  "model": "TP3",
+  "name": "工数実績",
+  "layer": "記録",
+  "area": "案件管理",
+  "single_pk": false,
+  "fields": [
+   {
+    "field": "タスクID",
+    "name": "タスクID",
+    "type": "ID",
+    "key": "PK",
+    "ref": "P2",
+    "required": true,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "作業日",
+    "name": "作業日",
+    "type": "日付",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "date"
+   },
+   {
+    "field": "担当者ID",
+    "name": "担当者ID",
+    "type": "ID",
+    "key": "PK",
+    "ref": "M2",
+    "required": true,
+    "source": "入力",
+    "kind": "fk"
+   },
+   {
+    "field": "実績工数",
+    "name": "実績工数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": true,
+    "source": "入力",
+    "kind": "num"
+   }
+  ]
+ },
+ "D1": {
+  "app": "metric",
+  "model": "TD1",
+  "name": "案件の週次進捗",
+  "layer": "導出",
+  "area": "指標",
+  "single_pk": false,
+  "fields": [
+   {
+    "field": "案件ID",
+    "name": "案件ID",
+    "type": "ID",
+    "key": "PK",
+    "ref": "P1",
+    "required": true,
+    "source": "計算",
+    "kind": "fk"
+   },
+   {
+    "field": "基準日",
+    "name": "基準日",
+    "type": "日付",
+    "key": "PK",
+    "ref": null,
+    "required": true,
+    "source": "計算",
+    "kind": "date"
+   },
+   {
+    "field": "計画工数",
+    "name": "計画工数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "計算",
+    "kind": "num"
+   },
+   {
+    "field": "実績工数",
+    "name": "実績工数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "計算",
+    "kind": "num"
+   },
+   {
+    "field": "完了タスク数",
+    "name": "完了タスク数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "計算",
+    "kind": "num"
+   },
+   {
+    "field": "遅延タスク数",
+    "name": "遅延タスク数",
+    "type": "数値",
+    "key": "",
+    "ref": null,
+    "required": false,
+    "source": "計算",
+    "kind": "num"
+   }
+  ]
+ }
+}
